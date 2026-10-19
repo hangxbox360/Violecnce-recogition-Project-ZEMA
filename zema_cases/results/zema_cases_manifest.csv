@@ -1,0 +1,21 @@
+dataset,case,clip,label,p_violence,correct,video
+hockey,best violent,fi112_xvid.avi,1,1.0000,True,hockey/best_violent_fi112_xvid
+hockey,best non-violent,no7_xvid.avi,0,0.0001,True,hockey/best_non_violent_no7_xvid
+hockey,hardest violent (no FN),fi192_xvid.avi,1,0.5303,True,hockey/hardest_violent__no_fn_fi192_xvid
+hockey,bad FP,no269_xvid.avi,0,0.9917,False,hockey/bad_fp_no269_xvid
+surv,best violent,fi068.mp4,1,0.9954,True,surv/best_violent_fi068
+surv,best non-violent,nofi069.mp4,0,0.0017,True,surv/best_non_violent_nofi069
+surv,bad FN,fi078.mp4,1,0.0024,False,surv/bad_fn_fi078
+surv,bad FP,nofi030.mp4,0,0.9909,False,surv/bad_fp_nofi030
+rlvs,best violent,V_516.mp4,1,1.0000,True,rlvs/best_violent_V_516
+rlvs,best non-violent,NV_72.mp4,0,0.0000,True,rlvs/best_non_violent_NV_72
+rlvs,bad FN,V_590.mp4,1,0.3326,False,rlvs/bad_fn_V_590
+rlvs,bad FP,NV_330.mp4,0,0.9628,False,rlvs/bad_fp_NV_330
+rwf2000,best violent,v_RLVS_a_0_1.mp4,1,1.0000,True,rwf2000/best_violent_v_RLVS_a_0_1
+rwf2000,best non-violent,v_BaseballPitch_g04_c02.avi,0,0.0000,True,rwf2000/best_non_violent_v_BaseballPitch_g04_c02
+rwf2000,bad FN,v_SUMO_d_1.avi,1,0.0001,False,rwf2000/bad_fn_v_SUMO_d_1
+rwf2000,bad FP,NV_353.mp4,0,0.9999,False,rwf2000/bad_fp_NV_353
+ubi,best violent,F_14_0_0_0_0.mp4,1,0.9895,True,ubi/best_violent_F_14_0_0_0_0
+ubi,best non-violent,N_530_0_1_1_0.mp4,0,0.0005,True,ubi/best_non_violent_N_530_0_1_1_0
+ubi,bad FN,F_55_1_0_0_0.mp4,1,0.0242,False,ubi/bad_fn_F_55_1_0_0_0
+ubi,bad FP,N_612_1_0_1_0.mp4,0,0.9629,False,ubi/bad_fp_N_612_1_0_1_0

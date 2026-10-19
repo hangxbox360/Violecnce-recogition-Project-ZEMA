@@ -22,7 +22,7 @@ strongly, **Batch 3** collects **challenging cases** that expose the method's
 limitations and edge cases, **Batch 4** collects **robustness cases** —
 heavy-clutter and crowd scenes where ZEMA stays stable while baselines struggle —
 and **Batch 5** collects **failure modes**: clear false-negative and
-false-positive cases that define the method's boundaries.
+false-positive cases that define the method's boundaries. **Batch 6** ([Section 7](#7-best-and-bad-cases-on-all-five-datasets-batch-6-rule-based)) adds 20 rule-selected best and bad test clips, four per dataset on all five benchmarks, and [Section 8](#8-real-time-demo-webcam--rtsp--video-file) a live-stream demo.
 
 **These are pre-rendered visualization clips, not the raw benchmark datasets.**
 Each `.mp4` is a side-by-side composite panel:
@@ -452,7 +452,164 @@ with which to veto motion that is intense but non-violent.
 
 ---
 
-## 7. Usage
+## 7. Best and bad cases on all five datasets (Batch 6, rule-based)
+
+Per dataset, four held-out **test** clips of the best fine-tuned ZEMA + GhostNetV2-ConvLSTM checkpoint, chosen by a fixed rule from its per-clip test predictions (`zema_cases/results/<dataset>_test_preds.csv`, paths relative to the data root), not hand-picked:
+
+- **best violent** / **best non-violent**: correct, most confident (highest / lowest P(violence));
+- **bad FN** / **bad FP**: wrong, most confident (violent clip with the lowest P, non-violent clip with the highest P); a dataset without such an error shows its hardest correct clip of that class.
+
+Each video: the clip with ZEMA's decision overlay (left) and the growing-window P(violence) of ZEMA (solid) and the six seed-42 comparison networks (dashed) as the clip plays (right): at every frame each model re-samples 16 frames from the part of the clip seen so far, so the last point is the whole-clip prediction. Long UBI clips are uniformly sampled to 360 frames.
+
+### Test accuracy of the checkpoints used
+
+| Dataset | test clips | ZEMA acc. (re-run / saved) |
+|:--|--:|--:|
+| Hockey | 150 | 98.67% / 98.67% |
+| SURV | 45 | 64.44% / 64.44% |
+| RLVS | 300 | 98.33% / 98.33% |
+| RWF-2000 | 273 | 78.39% / 78.39% |
+| UBI-Fights | 151 | 92.05% / 92.05% |
+
+### Clips per dataset
+
+#### Hockey
+
+| Case | Clip | Truth | ZEMA P(violence) | Comparators wrong |
+|:--|:--|:--|--:|--:|
+| best violent | [`fi112_xvid.avi`](zema_cases/hockey/best_violent_fi112_xvid.mp4) | violent | 1.000 | 0/6 |
+| best non-violent | [`no7_xvid.avi`](zema_cases/hockey/best_non_violent_no7_xvid.mp4) | non-violent | 0.000 | 0/6 |
+| hardest violent (no FN) | [`fi192_xvid.avi`](zema_cases/hockey/hardest_violent__no_fn_fi192_xvid.mp4) | violent | 0.530 | 0/6 |
+| bad FP | [`no269_xvid.avi`](zema_cases/hockey/bad_fp_no269_xvid.mp4) | non-violent | 0.992 | 6/6 |
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/hockey/best_violent_fi112_xvid.gif" width="100%"><br><sub>best violent · fi112_xvid.avi</sub></td>
+<td align="center" width="50%"><img src="zema_cases/hockey/best_non_violent_no7_xvid.gif" width="100%"><br><sub>best non-violent · no7_xvid.avi</sub></td>
+</tr>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/hockey/hardest_violent__no_fn_fi192_xvid.gif" width="100%"><br><sub>hardest violent (no FN) · fi192_xvid.avi</sub></td>
+<td align="center" width="50%"><img src="zema_cases/hockey/bad_fp_no269_xvid.gif" width="100%"><br><sub>bad FP · no269_xvid.avi</sub></td>
+</tr>
+</table>
+
+#### SURV
+
+| Case | Clip | Truth | ZEMA P(violence) | Comparators wrong |
+|:--|:--|:--|--:|--:|
+| best violent | [`fi068.mp4`](zema_cases/surv/best_violent_fi068.mp4) | violent | 0.995 | 0/6 |
+| best non-violent | [`nofi069.mp4`](zema_cases/surv/best_non_violent_nofi069.mp4) | non-violent | 0.002 | 2/6 |
+| bad FN | [`fi078.mp4`](zema_cases/surv/bad_fn_fi078.mp4) | violent | 0.002 | 0/6 |
+| bad FP | [`nofi030.mp4`](zema_cases/surv/bad_fp_nofi030.mp4) | non-violent | 0.991 | 6/6 |
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/surv/best_violent_fi068.gif" width="100%"><br><sub>best violent · fi068.mp4</sub></td>
+<td align="center" width="50%"><img src="zema_cases/surv/best_non_violent_nofi069.gif" width="100%"><br><sub>best non-violent · nofi069.mp4</sub></td>
+</tr>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/surv/bad_fn_fi078.gif" width="100%"><br><sub>bad FN · fi078.mp4</sub></td>
+<td align="center" width="50%"><img src="zema_cases/surv/bad_fp_nofi030.gif" width="100%"><br><sub>bad FP · nofi030.mp4</sub></td>
+</tr>
+</table>
+
+#### RLVS
+
+| Case | Clip | Truth | ZEMA P(violence) | Comparators wrong |
+|:--|:--|:--|--:|--:|
+| best violent | [`V_516.mp4`](zema_cases/rlvs/best_violent_V_516.mp4) | violent | 1.000 | 0/6 |
+| best non-violent | [`NV_72.mp4`](zema_cases/rlvs/best_non_violent_NV_72.mp4) | non-violent | 0.000 | 0/6 |
+| bad FN | [`V_590.mp4`](zema_cases/rlvs/bad_fn_V_590.mp4) | violent | 0.333 | 1/6 |
+| bad FP | [`NV_330.mp4`](zema_cases/rlvs/bad_fp_NV_330.mp4) | non-violent | 0.963 | 2/6 |
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/rlvs/best_violent_V_516.gif" width="100%"><br><sub>best violent · V_516.mp4</sub></td>
+<td align="center" width="50%"><img src="zema_cases/rlvs/best_non_violent_NV_72.gif" width="100%"><br><sub>best non-violent · NV_72.mp4</sub></td>
+</tr>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/rlvs/bad_fn_V_590.gif" width="100%"><br><sub>bad FN · V_590.mp4</sub></td>
+<td align="center" width="50%"><img src="zema_cases/rlvs/bad_fp_NV_330.gif" width="100%"><br><sub>bad FP · NV_330.mp4</sub></td>
+</tr>
+</table>
+
+#### RWF-2000
+
+| Case | Clip | Truth | ZEMA P(violence) | Comparators wrong |
+|:--|:--|:--|--:|--:|
+| best violent | [`v_RLVS_a_0_1.mp4`](zema_cases/rwf2000/best_violent_v_RLVS_a_0_1.mp4) | violent | 1.000 | 0/6 |
+| best non-violent | [`v_BaseballPitch_g04_c02.avi`](zema_cases/rwf2000/best_non_violent_v_BaseballPitch_g04_c02.mp4) | non-violent | 0.000 | 0/6 |
+| bad FN | [`v_SUMO_d_1.avi`](zema_cases/rwf2000/bad_fn_v_SUMO_d_1.mp4) | violent | 0.000 | 4/6 |
+| bad FP | [`NV_353.mp4`](zema_cases/rwf2000/bad_fp_NV_353.mp4) | non-violent | 1.000 | 2/6 |
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/rwf2000/best_violent_v_RLVS_a_0_1.gif" width="100%"><br><sub>best violent · v_RLVS_a_0_1.mp4</sub></td>
+<td align="center" width="50%"><img src="zema_cases/rwf2000/best_non_violent_v_BaseballPitch_g04_c02.gif" width="100%"><br><sub>best non-violent · v_BaseballPitch_g04_c02.avi</sub></td>
+</tr>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/rwf2000/bad_fn_v_SUMO_d_1.gif" width="100%"><br><sub>bad FN · v_SUMO_d_1.avi</sub></td>
+<td align="center" width="50%"><img src="zema_cases/rwf2000/bad_fp_NV_353.gif" width="100%"><br><sub>bad FP · NV_353.mp4</sub></td>
+</tr>
+</table>
+
+#### UBI-Fights
+
+| Case | Clip | Truth | ZEMA P(violence) | Comparators wrong |
+|:--|:--|:--|--:|--:|
+| best violent | [`F_14_0_0_0_0.mp4`](zema_cases/ubi/best_violent_F_14_0_0_0_0.mp4) | violent | 0.989 | 0/6 |
+| best non-violent | [`N_530_0_1_1_0.mp4`](zema_cases/ubi/best_non_violent_N_530_0_1_1_0.mp4) | non-violent | 0.000 | 0/6 |
+| bad FN | [`F_55_1_0_0_0.mp4`](zema_cases/ubi/bad_fn_F_55_1_0_0_0.mp4) | violent | 0.024 | 3/6 |
+| bad FP | [`N_612_1_0_1_0.mp4`](zema_cases/ubi/bad_fp_N_612_1_0_1_0.mp4) | non-violent | 0.963 | 6/6 |
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/ubi/best_violent_F_14_0_0_0_0.gif" width="100%"><br><sub>best violent · F_14_0_0_0_0.mp4</sub></td>
+<td align="center" width="50%"><img src="zema_cases/ubi/best_non_violent_N_530_0_1_1_0.gif" width="100%"><br><sub>best non-violent · N_530_0_1_1_0.mp4</sub></td>
+</tr>
+<tr>
+<td align="center" width="50%"><img src="zema_cases/ubi/bad_fn_F_55_1_0_0_0.gif" width="100%"><br><sub>bad FN · F_55_1_0_0_0.mp4</sub></td>
+<td align="center" width="50%"><img src="zema_cases/ubi/bad_fp_N_612_1_0_1_0.gif" width="100%"><br><sub>bad FP · N_612_1_0_1_0.mp4</sub></td>
+</tr>
+</table>
+
+Unlike Batch 2 (hand-picked), these clips are selected by the rule above, so the bad cases show the most confident errors, not typical ones. "Comparators wrong" counts how many of the six comparison networks are also on the wrong side of 0.5 for that clip.
+
+---
+
+## 8. Real-time demo (webcam / RTSP / video file)
+
+The real-time demo runs the best fine-tuned **ZEMA + GhostNetV2-ConvLSTM** checkpoint of a chosen
+training dataset on a live stream and raises a smoothed alarm.
+
+<p align="center"><img src="realtime/realtime_zema_surv.gif" width="480" alt="real-time ZEMA demo"></p>
+
+**How it works**
+- Every 0.5 s the last few seconds of frames are re-sampled to 16 frames with the
+  training reader's rule (truncated linspace, INTER_LINEAR 224x224, BGR→RGB), passed through ZEMA with that
+  dataset's config, then through the network. Default window = median test-clip length of the training
+  dataset (Hockey 1.6 s, SURV 2 s, RWF-2000 3 s, RLVS 5 s). On a whole clip the output equals the
+  showcase/eval pipeline (checked: Hockey `fi88`, 0.9997 vs 0.9997).
+- Alarm = k-of-n with hysteresis: ON when ≥ k of the last n probabilities are ≥ 0.6 (3 of the last 5);
+  OFF when all of the last 5 are < 0.4.
+- Overlay: state, P(violence), latency and a 30 s probability trace; red border while the alarm is on.
+- Logs: `windows.csv` (every prediction), `events.csv` (start/end/peak of each alarm), `alert_NNN.mp4`
+  (each alarm with pre-roll, ≤ 30 s), and the annotated stream.
+
+**Example run** (`realtime/realtime_zema_surv.mp4`, logs in `realtime/`): a 22 s stream of 11
+SURV clips joined back to back (non-violent / 2 fights / non-violent / 2 fights / non-violent), SURV weights,
+RTX 5060 Ti, ≈115 ms per prediction including ZEMA preprocessing. The first fight segment (5.4–8.7 s) raised one
+alarm at 6.7 s; the second (14.8–20.1 s) produced only isolated peaks (0.66, 0.98) that did not reach 3 of 5,
+so no alarm. This is a functional demo, not an accuracy measurement - some of these clips may belong to ZEMA's
+SURV training split.
+
+**Before real deployment:** the thresholds and k-of-n are uncalibrated defaults. Fine-tune and set them on
+footage from the target cameras (target false alarms per camera per day, then read recall), keep a human in
+the loop to confirm alarms, and follow local privacy law (e.g. PDPA) for retention and access.
+
+---
+
+## 9. Usage
 
 **File format**
 
@@ -499,6 +656,12 @@ Please cite the original datasets if you use these clips:
   *"Hockey Fight Detection Dataset,"* CAIP, 2011.
 - **RLVS (Real-Life Violence Situations)** — M. M. Soliman *et al.,*
   *"Violence Recognition from Videos Using Deep Learning Techniques,"* ICICIS, 2019.
+- **SURV (Surveillance Camera Fight)** — Ş. Aktı, G. A. Tataroğlu, H. K. Ekenel,
+  *"Vision-based Fight Detection from Surveillance Cameras,"* IPTA, 2019.
+- **RWF-2000** — M. Cheng, K. Cai, M. Li, *"RWF-2000: An Open Large Scale Video Database for Violence
+  Detection,"* ICPR, 2020.
+- **UBI-Fights** — B. Degardin, H. Proença, *"Iterative Weak/Self-Supervised Classification Framework for
+  Abnormal Events Detection,"* Pattern Recognition Letters, 2021.
 
 ## Citation
 

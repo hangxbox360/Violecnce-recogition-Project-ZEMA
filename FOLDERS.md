@@ -12,6 +12,8 @@ on the right. `+ZEMA (ours)` = the full ZEMA + GhostNetV2 + ConvLSTM pipeline.
 | `03_Interesting-Cases` | Challenging / edge cases where ZEMA struggles | 3 |
 | `04_Robustness-Cases` | Crowd / clutter where ZEMA stays stable | 6 |
 | `05_Bad-Cases` | Clear failures (false negative + false positive) | 2 |
+| `zema_cases/<dataset>/` (in the repo) | Rule-selected best / bad test clips, 4 per dataset × 5 datasets (GIF + MP4) | 20 |
+| `realtime/` (in the repo) | Live-stream demo example (GIF + MP4 + logs) | 1 |
 
 Delivered as two ZIPs (each under GitHub's 25 MB web-upload limit); extract both
 into the same location to reassemble the full tree.
