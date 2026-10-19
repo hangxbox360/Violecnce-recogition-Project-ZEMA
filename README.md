@@ -647,6 +647,10 @@ the loop to confirm alarms, and follow local privacy law (e.g. PDPA) for retenti
 
 ---
 
+## Acknowledgement: AI assistance
+
+Sections 7 and 8 of this README, the Batch 6 clips in `zema_cases/`, the real-time demo example in `realtime/` and their upload to this repository were prepared with the assistance of **Claude** (Anthropic), using Claude Code: selecting the clips by the stated rule, rendering the videos, writing the section text and committing/pushing the files (commits co-authored by Claude). The model, its training and evaluation, and all research decisions are the authors' own; the authors reviewed the material before publication.
+
 ## Attribution
 
 The underlying footage is derived from public violence-detection benchmarks.
