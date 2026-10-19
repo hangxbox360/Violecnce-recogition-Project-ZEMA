@@ -609,44 +609,6 @@ the loop to confirm alarms, and follow local privacy law (e.g. PDPA) for retenti
 
 ---
 
-## 9. Usage
-
-**File format**
-
-- Container/codec: `.mp4` (MPEG-4 Part 2), 10 fps, 1238×260; clips run
-  ~6.5–37 s (~0.3–1.7 MB each).
-- The GIF is 808×195, ~10.6 s, ~7.5 MB.
-- Plays in any standard viewer (VLC, browser, QuickTime) with no extra codecs.
-
-**How to use them**
-
-1. **Watch them.** Each clip is self-explanatory: border color and the
-   `+ZEMA (ours)` label give the prediction; the right-hand plot shows how ZEMA
-   and each baseline evolve over the clip. Look for cases where ZEMA and the
-   baselines *disagree* — those illustrate the contribution of the ZEMA
-   front-end.
-
-2. **Embed in docs / slides.** The GIF is a ready-made animated summary for a
-   README header or a talk. Example Markdown:
-
-   ```markdown
-   ![ZEMA vs no-ZEMA demo](zema_vs_non-zema_ghsotnevtv2_convlstm.gif)
-   ```
-
-3. **Extract a still** (e.g. for a figure) with ffmpeg:
-
-   ```bash
-   ffmpeg -i violence_V_983.mp4 -vf "select=eq(n\,40)" -vframes 1 frame.png
-   ```
-
-> **Note:** these are rendered demo outputs, so they **cannot be fed back into
-> the model as inputs** — the overlays and probability plot are part of the
-> pixels. To run your own inference or reproduce metrics, obtain the original
-> benchmark videos from their source datasets (below) and pass raw frames
-> through the ZEMA-Net pipeline.
-
----
-
 ## Acknowledgement: AI assistance
 
 Sections 7 and 8 of this README, the Batch 6 clips in `zema_cases/`, the real-time demo example in `realtime/` and their upload to this repository were prepared with the assistance of **Claude** (Anthropic), using Claude Code: selecting the clips by the stated rule, rendering the videos, writing the section text and committing/pushing the files (commits co-authored by Claude). The model, its training and evaluation, and all research decisions are the authors' own; the authors reviewed the material before publication.
